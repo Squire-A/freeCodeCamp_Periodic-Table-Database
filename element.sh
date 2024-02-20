@@ -12,6 +12,10 @@ if [[ $1 =~ ^[0-9]+$ ]]
 then
   # lookup element with atomic number and get required info for output
   ELEMENT_DATA=$($PSQL "SELECT atomic_number, symbol, name, atomic_mass, melting_point_celsius, boiling_point_celsius, type FROM elements JOIN properties USING (atomic_number) JOIN types USING (type_id) WHERE atomic_number = $1")
+elif [[ $1 =~ ^[A-Z][a-z]?$ ]]
+then
+  # lookup element nased on symbol
+  ELEMENT_DATA=$($PSQL "SELECT atomic_number, symbol, name, atomic_mass, melting_point_celsius, boiling_point_celsius, type FROM elements JOIN properties USING (atomic_number) JOIN types USING (type_id) WHERE symbol = '$1'")
 fi
 
 if [[ -z $ELEMENT_DATA ]]
