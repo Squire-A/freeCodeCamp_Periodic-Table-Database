@@ -16,6 +16,9 @@ elif [[ $1 =~ ^[A-Z][a-z]?$ ]]
 then
   # lookup element nased on symbol
   ELEMENT_DATA=$($PSQL "SELECT atomic_number, symbol, name, atomic_mass, melting_point_celsius, boiling_point_celsius, type FROM elements JOIN properties USING (atomic_number) JOIN types USING (type_id) WHERE symbol = '$1'")
+else
+  # lookup using name
+  ELEMENT_DATA=$($PSQL "SELECT atomic_number, symbol, name, atomic_mass, melting_point_celsius, boiling_point_celsius, type FROM elements JOIN properties USING (atomic_number) JOIN types USING (type_id) WHERE name ILIKE '$1'")
 fi
 
 if [[ -z $ELEMENT_DATA ]]
